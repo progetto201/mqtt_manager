@@ -206,7 +206,7 @@ Sviluppo e espansione
 
 Per aggiungere nuovi tipi di “dataclient”: 
 
-   1. Creare il record nella tabella “t_types” con i dettagli del nuovo nodo:
+1. Creare il record nella tabella “t_types” con i dettagli del nuovo nodo:
 
    La tabella e' strutturata nel seguente nodo:
 
@@ -348,7 +348,7 @@ Per aggiungere nuovi tipi di “dataclient”:
                logfile)
    
 6.  Modificare lo script mqtt_manager per gestire l'invio delle impostazioni dal database al nodo:
-    
+
    Nella funzione ``get_options()`` aggiungere un'istruzione if/elif per riconoscere il node_type (tipo di nodo)
    e richiamare una funzione ``get_options_typeX()``
    
