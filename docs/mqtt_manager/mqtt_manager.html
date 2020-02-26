@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="it" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="it" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mqtt_manager &mdash; mqtt_manager 01_01 documentazione</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Indice" href="../genindex.html" />
+    <link rel="search" title="Cerca" href="../search.html" />
+    <link rel="prev" title="MQTT_MANAGER" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> mqtt_manager
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">mqtt_manager</span></code></a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mqtt_manager</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li><code class="docutils literal notranslate"><span class="pre">mqtt_manager</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/mqtt_manager/mqtt_manager.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-mqtt_manager">
+<span id="mqtt-manager"></span><span id="code-docs"></span><h1><code class="docutils literal notranslate"><span class="pre">mqtt_manager</span></code><a class="headerlink" href="#module-mqtt_manager" title="Link a questa intestazione">¶</a></h1>
+<p>MQTT_MANAGER: gestisce i messaggi MQTT dei nodi</p>
+<p>Lo script si occupa di connettersi al database e al broker MQTT.
+A connessione avvenuta si iscrive ai topic di presentazione e dei dati
+e gestisce tutti i messaggi che arrivano.</p>
+<p>on_message() riceve i messaggi e li passa in base al topic alle funzioni:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mqtt_manager.manage_data" title="mqtt_manager.manage_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">manage_data()</span></code></a>: gestisce i messaggi con i dati dei nodi</p></li>
+<li><p><a class="reference internal" href="#mqtt_manager.manage_presentation" title="mqtt_manager.manage_presentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">manage_presentation()</span></code></a>: gestisce i messaggi di presentazione dei nodi</p></li>
+</ul>
+<dl class="function">
+<dt id="mqtt_manager.add_newnode_options">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">add_newnode_options</code><span class="sig-paren">(</span><em class="sig-param">t_nodeid</em>, <em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.add_newnode_options" title="Link a questa definizione">¶</a></dt>
+<dd><p>Inserisce nella tabella opzioni del nodo le nuove impostazioni.</p>
+<p>La funzione viene richiamata quando viene aggiunto un nuovo nodo
+al sistema e occorre recuperare le impostazioni di default impostate nello sketch:</p>
+<p>viene recuperato dal messaggio il tipo di nodo e in base a questo viene
+richiamata la funzione adatta:</p>
+<ul class="simple">
+<li><p>se il tipo di nodo e” 0: DHT22, richiama <a class="reference internal" href="#mqtt_manager.add_newnode_options_type0" title="mqtt_manager.add_newnode_options_type0"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_newnode_options_type0()</span></code></a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_nodeid</strong> (<em>int</em>) – intero, id nodo da passare alla funzione specifica per il tipo di nodo</p></li>
+<li><p><strong>t_msg</strong> (<em>dict</em>) – dizionario, messaggio MQTT decodificato proveniente dal nodo</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.add_newnode_options_type0">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">add_newnode_options_type0</code><span class="sig-paren">(</span><em class="sig-param">t_nodeid</em>, <em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.add_newnode_options_type0" title="Link a questa definizione">¶</a></dt>
+<dd><p>Inserisce nella tabella opzioni del nodo di tipo 0 le nuove impostazioni.</p>
+<p>La funzione, richiamata da <a class="reference internal" href="#mqtt_manager.add_newnode_options" title="mqtt_manager.add_newnode_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_newnode_options()</span></code></a>, si occupa
+di recuperare dal messaggio MQTT le impostazioni di default dello sketch
+e di inserirle nella tabella del tipo adatto.</p>
+<p>In questo caso il tipo e” 0, quindi si tratta di un nodo con DHT22
+che invia il tempo da aspettare tra le rilevazioni:
+viene inserito nel database insieme all’id del nodo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_nodeid</strong> (<em>int</em>) – intero, id del nodo</p></li>
+<li><p><strong>t_msg</strong> (<em>dict</em>) – dizionario, messaggio MQTT decodificato</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.get_node">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">get_node</code><span class="sig-paren">(</span><em class="sig-param">t_macaddr</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.get_node" title="Link a questa definizione">¶</a></dt>
+<dd><p>Restituisce id, ip, type_id del nodo con indirizzo MAC &lt;t_macaddr&gt;.</p>
+<p>La funzione esegue un’istruzione SQL di select per selezionare
+id, ip, type_id del nodo dalla tabella t_nodi dove (WHERE) mac corrisponde a &lt;t_macaddr&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_macaddr</strong> (<em>string</em>) – stringa con indirizzo MAC</p>
+</dd>
+<dt class="field-even">Return node</dt>
+<dd class="field-even"><p>tupla con informazioni relative al nodo</p>
+</dd>
+<dt class="field-odd">Tipo di ritorno</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.get_options">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">get_options</code><span class="sig-paren">(</span><em class="sig-param">t_nodeid</em>, <em class="sig-param">t_nodetype</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.get_options" title="Link a questa definizione">¶</a></dt>
+<dd><p>Restituisce le impostazioni del nodo &lt;t_nodeid&gt; del tipo &lt;t_nodetype&gt;.</p>
+<p>Con il tipo di nodo &lt;t_nodetype&gt; viene scelta la funzione
+corretta da richiamare per ottenere le impostazioni del nodo &lt;t_nodeid&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_nodeid</strong> (<em>int</em>) – identificativo del nodo</p></li>
+<li><p><strong>t_nodetype</strong> (<em>int</em>) – identificativo del tipo di nodo</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return options</dt>
+<dd class="field-even"><p>tupla con impostazioni del nodo</p>
+</dd>
+<dt class="field-odd">Tipo di ritorno</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.get_options_type0">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">get_options_type0</code><span class="sig-paren">(</span><em class="sig-param">t_nodeid</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.get_options_type0" title="Link a questa definizione">¶</a></dt>
+<dd><p>Restituisce le impostazioni del nodo &lt;t_nodeid&gt; di tipo 0.</p>
+<p>Esegue l’istruzione SQL per restituire node_id e timebetweenread (tempo tra rilevazioni)
+del nodo &lt;t_nodeid&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_nodeid</strong> (<em>int</em>) – identificativo del nodo</p>
+</dd>
+<dt class="field-even">Return options</dt>
+<dd class="field-even"><p>tupla con impostazioni del nodo</p>
+</dd>
+<dt class="field-odd">Tipo di ritorno</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.get_type">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">get_type</code><span class="sig-paren">(</span><em class="sig-param">t_typeid</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.get_type" title="Link a questa definizione">¶</a></dt>
+<dd><p>Restituisce id, description, category_id del nodo con type_id = &lt;t_typeid&gt;.</p>
+<p>La funzione esegue un’istruzione SQL di select per selezionare
+id, description, category_id dalla tabella t_types dove (WHERE) id = &lt;t_typeid&gt;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_typeid</strong> (<em>int</em>) – intero, identifica tipo di nodo</p>
+</dd>
+<dt class="field-even">Return nodetype</dt>
+<dd class="field-even"><p>tupla, contiene id, description, category_id del tipo di nodo &lt;t_typeid&gt;</p>
+</dd>
+<dt class="field-odd">Tipo di ritorno</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.logger">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">logger</code><span class="sig-paren">(</span><em class="sig-param">t_message</em>, <em class="sig-param">t_logfile</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.logger" title="Link a questa definizione">¶</a></dt>
+<dd><p>Scrive nel file di log &lt;t_logfile&gt; la riga &lt;t_message&gt;.</p>
+<p>La funzione ottiene il timestamp attuale e scrive direttamente
+su file senza aspettare la chiusura del file stesso.</p>
+<p>Il programma, essendo un loop infinito, dovrebbe
+terminare solo in situazioni anomale: questo
+significa che non si puo” attendere la chiusura del file
+per salvare i messaggi di log (andrebbero persi).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_message</strong> (<em>string</em>) – stringa, contiene messaggio di log da scrivere</p></li>
+<li><p><strong>t_logfile</strong> – file di log (aperto) da scrivere</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.manage_data">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">manage_data</code><span class="sig-paren">(</span><em class="sig-param">t_macaddr</em>, <em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.manage_data" title="Link a questa definizione">¶</a></dt>
+<dd><p>Gestisce i messaggi MQTT con dati.</p>
+<p>ottiene id e tipo di nodo dal database e gestisce
+i dati attraverso la funzione adatta:
+- per i nodi di tipo 0 viene richiamata la funzione manage_data_type0()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_macaddr</strong> (<em>str</em>) – stringa, indirizzo MAC</p></li>
+<li><p><strong>t_msg</strong> (<em>dict</em>) – messaggio MQTT decodificato</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.manage_data_type0">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">manage_data_type0</code><span class="sig-paren">(</span><em class="sig-param">t_nodeid</em>, <em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.manage_data_type0" title="Link a questa definizione">¶</a></dt>
+<dd><p>Inserisce i dati dei nodi di tipo 0 nel database.</p>
+<p>Esegue l’istruzione SQL per inserire i dati.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_nodeid</strong> (<em>int</em>) – identificativo del nodo</p></li>
+<li><p><strong>t_msg</strong> (<em>dict</em>) – messaggio MQTT decodificato</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.manage_presentation">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">manage_presentation</code><span class="sig-paren">(</span><em class="sig-param">t_macaddr</em>, <em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.manage_presentation" title="Link a questa definizione">¶</a></dt>
+<dd><p>Gestisce i messaggi di presentazione.</p>
+<p>Recupera dal messaggio ip e mac address del nodo,
+controlla se l’ip e” valido e si assicura che il mac address
+nel messaggio corrisponda a quello del topic.
+La funzione prova infine a ottenere le informazioni del nodo dal database:
+se esistono viene richiamata la funzione present_oldnode(),
+se non esistono viene richiamata la funzione present_newnode()
+&gt; Se il nodo e” duplicato non viene richiamata alcuna funzione</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_macaddr</strong> (<em>str</em>) – stringa, indirizzo MAC</p></li>
+<li><p><strong>t_msg</strong> (<em>dict</em>) – messaggio MQTT decodificato</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.mqtt_conn">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">mqtt_conn</code><span class="sig-paren">(</span><em class="sig-param">t_configfile</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.mqtt_conn" title="Link a questa definizione">¶</a></dt>
+<dd><p>Si connette al broker MQTT e restituisce oggetto connessione.</p>
+<p>Si assicura che il file di configurazione esiste e contiene le proprieta”
+necessarie a connettersi al broker MQTT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_configfile</strong> (<em>str</em>) – stringa, percorso del file con credenziali per mysql</p>
+</dd>
+<dt class="field-even">Return t_client</dt>
+<dd class="field-even"><p>oggetto client</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.mysql_conn">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">mysql_conn</code><span class="sig-paren">(</span><em class="sig-param">t_configfile</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.mysql_conn" title="Link a questa definizione">¶</a></dt>
+<dd><p>Si connette al database e restituisce oggetto connessione.</p>
+<p>Si assicura che il file di configurazione esiste e contiene le proprieta”
+necessarie a connettersi al DB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_configfile</strong> (<em>str</em>) – stringa, percorso del file con credenziali per mysql</p>
+</dd>
+<dt class="field-even">Return mydb</dt>
+<dd class="field-even"><p>oggetto connessione</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.on_connect">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">on_connect</code><span class="sig-paren">(</span><em class="sig-param">t_client</em>, <em class="sig-param">userdata</em>, <em class="sig-param">flags</em>, <em class="sig-param">rc</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.on_connect" title="Link a questa definizione">¶</a></dt>
+<dd><p>A connessione con il broker MQTT avvenuta si iscrive ai maintopic.</p>
+<p>Un for loop fa iscrivere il client a tutti i maintopic in &lt;maintopics&gt;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_client</strong> – client MQTT</p></li>
+<li><p><strong>userdata</strong> – </p></li>
+<li><p><strong>flags</strong> – </p></li>
+<li><p><strong>rc</strong> – codice di stato</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.on_disconnect">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">on_disconnect</code><span class="sig-paren">(</span><em class="sig-param">t_client</em>, <em class="sig-param">userdata</em>, <em class="sig-param">rc=0</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.on_disconnect" title="Link a questa definizione">¶</a></dt>
+<dd><p>Funzione richiamata in caso di disconnessione.</p>
+<p>Questa funzione non dovrebbe essere richiamata MAI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_client</strong> – client MQTT</p></li>
+<li><p><strong>userdata</strong> – </p></li>
+<li><p><strong>rc</strong> – status disconnessione</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.on_message">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">on_message</code><span class="sig-paren">(</span><em class="sig-param">t_client</em>, <em class="sig-param">userdata</em>, <em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.on_message" title="Link a questa definizione">¶</a></dt>
+<dd><p>Gestisce i messaggi arrivati e li passa alla funzione corretta.</p>
+<p>La funzione cerca di ottenere dal topic del messaggio MQTT
+il «maintopic» (primo livello del topic) e l’indirizzo MAC (secondo livello del topic).</p>
+<p>Dopo aver suddiviso i livelli del topic la funzione decodifica il messaggio JSON proveniente dal nodo,
+si assicura che il topic sia strutturato in maniera adeguata: &lt;maintopic&gt;/&lt;macaddress&gt;,
+verifica con valid_mac() se l’indirizzo MAC &lt;macaddress&gt; e” valido e infine
+controlla se il &lt;maintopic&gt; e” riconosciuto dal programma (e” presente in &lt;maintopics&gt;).</p>
+<p>Se il maintopic e” riconosciuto allora viene richiamata la sua funzione:
+- maintopic «presentation»: viene richiamata la funzione manage_presentation()
+- maintopic «data»: viene richiamata la funzione manage_data()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_client</strong> – client MQTT</p></li>
+<li><p><strong>userdata</strong> – </p></li>
+<li><p><strong>msg</strong> – messaggio MQTT, contiene stringa JSON</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.present_newnode">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">present_newnode</code><span class="sig-paren">(</span><em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.present_newnode" title="Link a questa definizione">¶</a></dt>
+<dd><p>Aggiunge il nuovo nodo alla tabella dei nodi nel DB.</p>
+<p>La funzione ottiene informazioni sul tipo di nodo che ha inviato
+il messaggio e inserisce nella tabella nodi l’ip, id del tipo,
+mac e location_id a 0 (sconosciuta).</p>
+<p>Dopo aver inserito il nodo nella tabella vengono aggiunge le
+impostazioni del nodo nella tabella adatta attraverso
+la funzione <a class="reference internal" href="#mqtt_manager.add_newnode_options" title="mqtt_manager.add_newnode_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_newnode_options()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_msg</strong> (<em>dict</em>) – messaggio MQTT decodificato</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.present_oldnode">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">present_oldnode</code><span class="sig-paren">(</span><em class="sig-param">t_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.present_oldnode" title="Link a questa definizione">¶</a></dt>
+<dd><p>Aggiorna le informazioni del node sul DB e invia al node le impostazioni</p>
+<p>Verifica se ip e node_type sono aggiornati: se lo sono manda direttamente le impostazioni al node,
+altrimenti aggiorna con l’istruzione SQL update il database e poi gli manda le impostazioni.
+&gt; Le impostazioni vengono recuperate dal database con la funzione <a class="reference internal" href="#mqtt_manager.get_options" title="mqtt_manager.get_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_options()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_msg</strong> (<em>dict</em>) – messaggio MQTT decodificato</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="mqtt_manager.valid_mac">
+<code class="sig-prename descclassname">mqtt_manager.</code><code class="sig-name descname">valid_mac</code><span class="sig-paren">(</span><em class="sig-param">t_mac</em><span class="sig-paren">)</span><a class="headerlink" href="#mqtt_manager.valid_mac" title="Link a questa definizione">¶</a></dt>
+<dd><p>Verifica validita” del mac address &lt;t_mac&gt;.</p>
+<p>Se la regular expression restituisce un match,
+l’indirizzo MAC e” valido: verra” restituito True.
+Se non e” presente il match, viene restituito False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parametri</dt>
+<dd class="field-odd"><p><strong>t_mac</strong> (<em>string</em>) – stringa, indirizzo MAC da validare</p>
+</dd>
+<dt class="field-even">Return valid</dt>
+<dd class="field-even"><p>booleano che indica validita” di &lt;t_mac&gt;</p>
+</dd>
+<dt class="field-odd">Tipo di ritorno</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="MQTT_MANAGER" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Stefano Zenaro
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
