@@ -423,4 +423,4 @@ Zenaro Stefano
 
 .. _prepared statements: https://www.html.it/pag/63163/mysqli-e-i-prepared-statement/
 
-.. _questa pagina: mqtt_manager/mqtt_manager.html
+.. _questa pagina: https://progetto201.github.io/mqtt_manager/
