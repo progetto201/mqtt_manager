@@ -30,6 +30,12 @@ connessione avvenuta **si iscrive ai topic** di presentazione e dei dati e
 Guida all’uso
 -------------
 
+Installare le dipendenze con il comando:
+
+::
+   
+   pip3 install -r requirements.txt
+
 Creare un file di configurazione con la seguente struttura:
 
 ::
